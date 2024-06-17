@@ -52,12 +52,18 @@ export function Home() {
     ev: React.FormEvent<HTMLFormElement>
   ) => {
     ev.preventDefault();
-    if (startDate != null) {
+
+    if (startDate != null && startDate != undefined) {
+      const dia = startDate.getDay();
+      const mes = startDate.getMonth() + 1;
+      const ano = startDate.getFullYear();
+      const formatedDate = `${dia}/${mes}/${ano}`
+
       const agendamentoObj: AgendamentoRequestDto = {
         clinica_ou_hospital_de_destino: destino.trim(),
         contato: contato.trim(),
         createdAt: Date.now(),
-        data: startDate.toString(),
+        data: formatedDate,
         horario: horaio.trim(),
         motorista: "",
         nome_paciente: nome,
