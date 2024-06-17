@@ -1,24 +1,28 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { Collections } from "../enums/Collections";
 import { db } from "../firebase/config";
-import { PedidoDoUsuarioResponseDto } from "../types/PedidoDoUsuarioResponseDto";
-import { ApiUtils } from "../utils/ApiUtils";
 import { AgendamentoRequestDto } from "./../types/AgendamentoRequestDto";
 
 export class AgendamentoRepository {
-  async getAll(token: string, userId: string) {
-    try {
-      const res: any = await new ApiUtils().fazerRequisicao(
-        `/user/pedidos/${userId}`,
-        token
-      );
-      console.log(res);
-      return res as Array<PedidoDoUsuarioResponseDto>;
-    } catch (error: any) {
-      console.error("Erro ao obter os dados:", error.message);
+  async getAll() {
+    const date = new Date()
+    const dia = date.getDay();
+    const mes = date.getMonth() + 1;
+    const ano = date.getFullYear();
 
+    const todayFormated = `${dia}/${mes}/${ano}`
+
+    const q = query(collection(db, Collections.AGENDAMENTOS), where("data", "==", todayFormated));
+  
+    try {
+       const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+    });
+    } catch (error) {
       return [];
     }
+
   }
 
   async createAgendamento(
