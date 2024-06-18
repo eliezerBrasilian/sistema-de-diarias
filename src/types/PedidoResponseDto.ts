@@ -3,7 +3,7 @@ import { PedidoStatus } from "../enums/PedidoStatus";
 import { Plataforma } from "../enums/Plataforma";
 import { TipoDePagamento } from "../enums/TipoDePagamento";
 import { AcompanhamentoResumidoResponseDto } from "./AcompanhamentoResumidoResponseDto";
-import { Address } from "./Address";
+import { Address } from "./Destino";
 
 import { SalgadoResumidoResponseDto } from "./SalgadoResumidoResponseDto";
 import { UserResponseDto } from "./UserResponseDto";

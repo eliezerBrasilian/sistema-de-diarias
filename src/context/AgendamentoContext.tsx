@@ -1,19 +1,20 @@
-import { ReactNode, createContext, useContext } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 import { LocalStorageKeys } from "../enums/LocalStorageKeys";
 import { AgendamentoRepository } from "../repositories/AgendamentoRepository";
 
 import { AgendamentoRequestDto } from "../types/AgendamentoRequestDto";
+import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 
 interface AgendamentoContextInterface {
   getAll: () => void;
   cria: (agendamentoRequestDto: AgendamentoRequestDto) => Promise<void>;
-  // agendamentos: [];
+  agendamentos: AgendamentoResponseDto[];
 }
 
 const defaultAgendamentoContext: AgendamentoContextInterface = {
   getAll: () => {},
   cria: async (_agendamentoRequestDto) => {},
-  // agendamentos: [],
+  agendamentos: [],
 };
 
 const AgendamentoContext = createContext(defaultAgendamentoContext);
@@ -29,18 +30,17 @@ interface AgendamentoContextProps {
 export function AgendamentoContextProvider({
   children,
 }: AgendamentoContextProps) {
-  // const [pedidos, setPedidos] = useState<Array<PedidoDoUsuarioResponseDto>>([]);
+  const [agendamentos, setAgendamentos] = useState<
+    Array<AgendamentoResponseDto>
+  >([]);
 
   const agendamentoRepository = new AgendamentoRepository();
 
   async function getAll() {
-    var token = localStorage.getItem(LocalStorageKeys.TOKEN);
-    var userId = localStorage.getItem(LocalStorageKeys.USER_ID);
-
-    if (token != null && userId != null) {
-      // const lista = await agendamentoRepository.getAll(token, userId);
-      // setPedidos(lista);
-    }
+    const lista: Array<AgendamentoResponseDto> =
+      await agendamentoRepository.getAll();
+    console.log(lista);
+    setAgendamentos(lista);
   }
 
   async function cria(agendamento: AgendamentoRequestDto) {
@@ -51,6 +51,16 @@ export function AgendamentoContextProvider({
         agendamento,
         () => {
           window.alert("sucesso");
+          setAgendamentos((oldStateList) => {
+            var copy: AgendamentoRequestDto[] = [];
+            copy.push(agendamento);
+
+            for (let i = 0, j = 1; i < oldStateList.length; i++, j++) {
+              copy[j] = oldStateList[i];
+            }
+
+            return copy;
+          });
         },
         () => {
           window.alert("falha");
@@ -64,6 +74,7 @@ export function AgendamentoContextProvider({
       value={{
         getAll,
         cria,
+        agendamentos,
       }}
     >
       {children}

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
 import down from "../assets/down-arrows.png";
 import up from "../assets/up.png";
@@ -12,20 +10,28 @@ import { AgendamentoStatus } from "../enums/AgendamentoStatus";
 import { LocalStorageKeys } from "../enums/LocalStorageKeys";
 import { Rotas } from "../enums/Rotas";
 import hs from "../modules/Home.module.css";
-import { AgendamentoRequestDto } from "../types/AgendamentoRequestDto";
 
+import { AgendamentosComponent } from "../components/AgendamentosComponent";
+import { FormCreateAgendamento } from "../components/FormCreateAgendamento";
+import { AgendamentoRequestDto } from "../types/AgendamentoRequestDto";
+import { Destino } from "../types/Destino";
+import { DestinationRepository } from "./../repositories/DestinationRepository";
 export function Home() {
   const { handleHomeBottomBar, activateVisibility } = useBottomBarContext();
 
   const nav = useNavigate();
 
-  const { cria } = useAgendamentoContext();
+  const { cria, getAll, agendamentos } = useAgendamentoContext();
 
+  const destinationRepository = new DestinationRepository();
+
+  const destinos = destinationRepository.getAll();
   const [nome, setNome] = useState("Joao Lucas Abreu Marting Costa");
   const [temAcompanhante, setTemAcompanhamente] = useState(false);
-  const [destino, setDestino] = useState("Hospital Santa Isabel");
+  const [destino, setDestino] = useState<Destino>(
+    destinationRepository.getAll()[0]
+  );
   const [contato, setContato] = useState("12345678910");
-  // const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [startDate, setDia] = useState<Date | null>(new Date());
   const [horaio, setHorario] = useState("15:30");
 
@@ -35,11 +41,9 @@ export function Home() {
     handleHomeBottomBar();
   }, []);
 
-  // useEffect(() => {
-  //   if (!carregado) {
-  //     getAllSalgados();
-  //   }
-  // }, []);
+  useEffect(() => {
+    getAll();
+  }, []);
 
   useEffect(() => {
     var token = localStorage.getItem(LocalStorageKeys.TOKEN);
@@ -47,6 +51,35 @@ export function Home() {
       nav(Rotas.LOGIN);
     }
   }, []);
+
+  const handleChangeHospital = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const destinoencontrado = destinos.find(
+      (v) => v.nome == event.target.value
+    );
+    if (destinoencontrado != undefined) {
+      setDestino(destinoencontrado);
+    }
+  };
+
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNome(e.target.value);
+  };
+
+  const onChangeContato = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContato(e.target.value);
+  };
+  const onChangeData = (date: Date | null) => {
+    setDia(date);
+  };
+  const onChangeHorario = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHorario(e.target.value);
+  };
+
+  const toogleAcompanhante = () => {
+    setTemAcompanhamente(!temAcompanhante);
+  };
 
   const handleCreateAgendamento = async (
     ev: React.FormEvent<HTMLFormElement>
@@ -57,10 +90,10 @@ export function Home() {
       const dia = startDate.getDay();
       const mes = startDate.getMonth() + 1;
       const ano = startDate.getFullYear();
-      const formatedDate = `${dia}/${mes}/${ano}`
+      const formatedDate = `${dia}/${mes}/${ano}`;
 
       const agendamentoObj: AgendamentoRequestDto = {
-        clinica_ou_hospital_de_destino: destino.trim(),
+        destino: destino,
         contato: contato.trim(),
         createdAt: Date.now(),
         data: formatedDate,
@@ -86,109 +119,37 @@ export function Home() {
             setExpanded(!expanded);
           }}
         />
-        <CustomBtn text="Confirmar paciente" backgroundColor="#943EB2" />
+        <CustomBtn
+          text="Montar diária"
+          backgroundColor="#943EB2"
+          onClick={() => {
+            nav(Rotas.TELA_MONTAR_DIARIA);
+          }}
+        />
       </div>
 
       {expanded && (
-        <form onSubmit={handleCreateAgendamento}>
-          <div className={hs.input_container}>
-            <p>Nome do paciente</p>
-            <input
-              type="text"
-              id="fname"
-              name="fname"
-              placeholder="Digite seu email"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-            />
-          </div>
-          <div className={hs.input_container}>
-            <label>
-              <input
-                type="checkbox"
-                checked={temAcompanhante}
-                onChange={() => {
-                  setTemAcompanhamente(!temAcompanhante);
-                }}
-              />
-              Tem acompanhante?
-            </label>
-          </div>
-
-          <div className={hs.input_container}>
-            <p>Nome do Hospital/Clinica</p>
-            <input
-              type="text"
-              id="lname"
-              name="lname"
-              placeholder={"hospital ou clinica"}
-              value={destino}
-              onChange={(e) => setDestino(e.target.value)}
-            />
-          </div>
-
-          <div className={hs.input_container}>
-            <p>Celular para contato</p>
-            <InputMask
-              type="text"
-              mask="(99) 99999-9999"
-              placeholder={"(12)34567-8910"}
-              value={contato}
-              onChange={(e) => setContato(e.target.value)}
-            />
-          </div>
-
-          <div className={hs.input_container}>
-            <hr />
-            <p>Dia</p>
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setDia(date)}
-              dateFormat="dd/MM/yyyy"
-              placeholderText="Escolha uma data"
-            />
-          </div>
-          <div className={hs.input_container}>
-            <p>Horário</p>
-            <InputMask
-              type="text"
-              mask="99:99"
-              placeholder={"horário do exame ou consulta"}
-              value={horaio}
-              onChange={(e) => setHorario(e.target.value)}
-            />
-          </div>
-
-          <CustomBtn
-            text="Salvar"
-            // onClick={handleCreateAgendamento}
-            padding={"10px 15px 10px 15px"}
-          />
-        </form>
+        <FormCreateAgendamento
+          handleCreateAgendamento={handleCreateAgendamento}
+          nome={nome}
+          onChangeName={onChangeName}
+          onChangeContato={onChangeContato}
+          onChangeData={onChangeData}
+          onChangeHorario={onChangeHorario}
+          toogleAcompanhante={toogleAcompanhante}
+          temAcompanhante={temAcompanhante}
+          destino={destino}
+          handleChangeHospital={handleChangeHospital}
+          contato={contato}
+          data={startDate}
+          horario={horaio}
+          destinos={destinos}
+        />
       )}
 
-      {/* <h1>Promoções imperdíveis</h1>
+      <h1>Pacientes agendados</h1>
 
-      {salgadosEmPromocao.length == 0 ? (
-        <p>Não temos promoções no momento, mas fique ligado(a)</p>
-      ) : (
-        <div
-          style={{
-            marginTop: 15,
-            paddingBottom: 80,
-            paddingLeft: 10,
-            paddingRight: 10,
-          }}
-        >
-          {salgadosEmPromocao?.map((item, index) => (
-            <HomeSalgado
-              key={index}
-              salgadoDto={item}
-              handlePopUpEdicaoVisibilidade={() => {}}
-            />
-          ))}
-        </div>
-      )} */}
+      <AgendamentosComponent agendamentosList={agendamentos} />
     </div>
   );
 }

@@ -1,0 +1,19 @@
+.table {
+  width: 100%;
+  border-collapse: collapse; /* Remove espaços entre as bordas das células */
+}
+
+th,
+td {
+  border: 1px solid #ddd; /* Adiciona borda às células */
+  padding: 8px; /* Adiciona espaço interno nas células */
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; /* Adiciona cor de fundo alternada para as linhas */
+}
+
+th {
+  background-color: #4caf50; /* Adiciona cor de fundo para o cabeçalho da tabela */
+  color: white; /* Muda a cor do texto do cabeçalho para branco */
+}

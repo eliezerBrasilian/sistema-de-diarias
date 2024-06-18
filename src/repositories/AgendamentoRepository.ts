@@ -1,28 +1,65 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  DocumentData,
+  QuerySnapshot,
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { Collections } from "../enums/Collections";
 import { db } from "../firebase/config";
+import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 import { AgendamentoRequestDto } from "./../types/AgendamentoRequestDto";
 
 export class AgendamentoRepository {
-  async getAll() {
-    const date = new Date()
+  async getAll(): Promise<AgendamentoResponseDto[]> {
+    const date = new Date();
     const dia = date.getDay();
     const mes = date.getMonth() + 1;
     const ano = date.getFullYear();
 
-    const todayFormated = `${dia}/${mes}/${ano}`
+    const todayFormated = `${dia - 1}/${mes}/${ano}`;
 
-    const q = query(collection(db, Collections.AGENDAMENTOS), where("data", "==", todayFormated));
-  
+    const q = query(
+      collection(db, Collections.AGENDAMENTOS),
+      where("data", "==", todayFormated)
+    );
+
     try {
-       const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-    });
+      const querySnapshot = await getDocs(q);
+      const agendamentos =
+        this.queryDocumentSnapshotToAgendamentoMapper(querySnapshot);
+
+      return agendamentos;
     } catch (error) {
       return [];
     }
+  }
 
+  private queryDocumentSnapshotToAgendamentoMapper(
+    documents: QuerySnapshot<DocumentData, DocumentData>
+  ): AgendamentoResponseDto[] {
+    var agendamentoList: AgendamentoResponseDto[] = [];
+
+    documents.forEach((doc) => {
+      const data = doc.data();
+      agendamentoList.push({
+        id: doc.id,
+        destino: data.clinica_ou_hospital_de_destino,
+        contato: data.contato,
+        createdAt: data.createdAt,
+        data: data.data,
+        horario: data.horario,
+        motorista: data.motorista,
+        nome_paciente: data.nome_paciente,
+        observacao: data.observacao,
+        possui_acompanhante: data.possui_acompanhante,
+        status: data.status,
+      });
+    });
+
+    return agendamentoList;
   }
 
   async createAgendamento(

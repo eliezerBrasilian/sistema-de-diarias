@@ -1,6 +1,6 @@
 import { MetodoPagamento } from "../enums/MetodoPagamento";
 import { AcompanhamentoRequestDto } from "./AcompanhamentoRequestDto";
-import { Address } from "./Address";
+import { Address } from "./Destino";
 import { PagamentoStatus } from "./PagamentoStatus";
 import { PedidoStatus } from "./PedidoStatus";
 import { SalgadoRequestDto } from "./SalgadoRequestDto";

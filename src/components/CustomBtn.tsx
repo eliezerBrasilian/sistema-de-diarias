@@ -20,9 +20,7 @@ export function CustomBtn({
   if (icon != undefined) {
     return (
       <button
-        onClick={(ev) => {
-          onClick();
-        }}
+        onClick={onClick}
         style={{
           backgroundColor: backgroundColor,
           border: "none",

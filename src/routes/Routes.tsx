@@ -5,7 +5,7 @@ import ScrollToTop from "../components/ScrollToTop";
 import { Rotas } from "../enums/Rotas";
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
-import { TelaDadosDaConta } from "../pages/TelaDadosDaConta";
+import { TelaAdicionarNaDiaria } from "../pages/TelaAdicionarNaDiaria";
 import { TelaPerfil } from "../pages/TelaPerfil";
 
 export function RoutesApp() {
@@ -24,8 +24,8 @@ export function RoutesApp() {
         <Route path={Rotas.TELA_PERFIL} element={<TelaPerfil />} />
 
         <Route
-          path={Rotas.TELA_DADOS_DA_CONTA}
-          element={<TelaDadosDaConta />}
+          path={Rotas.TELA_MONTAR_DIARIA}
+          element={<TelaAdicionarNaDiaria />}
         />
       </Routes>
       {/* <BottomBar /> */}

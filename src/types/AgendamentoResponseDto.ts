@@ -1,6 +1,7 @@
 import { Destino } from "./Destino";
 
-export interface AgendamentoRequestDto {
+export interface AgendamentoResponseDto {
+  id: string;
   nome_paciente: string;
   possui_acompanhante: boolean;
   destino: Destino;
@@ -11,4 +12,5 @@ export interface AgendamentoRequestDto {
   createdAt: number;
   status: string;
   motorista: string;
+  veiculo: null | string;
 }
