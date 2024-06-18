@@ -1,6 +1,7 @@
 .table {
   width: 100%;
   border-collapse: collapse; /* Remove espaços entre as bordas das células */
+  border: 1px solid black; /* Adiciona borda preta fina à tabela */
 }
 
 th,
@@ -13,7 +14,81 @@ tr:nth-child(even) {
   background-color: #f2f2f2; /* Adiciona cor de fundo alternada para as linhas */
 }
 
-th {
-  background-color: #4caf50; /* Adiciona cor de fundo para o cabeçalho da tabela */
-  color: white; /* Muda a cor do texto do cabeçalho para branco */
+/* th {
+   background-color: #4caf50; Adiciona cor de fundo para o cabeçalho da tabela 
+} */
+
+.topContent {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.newSection {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  margin-bottom: 10px;
+  column-gap: 50px;
+}
+
+.newSection img {
+  max-height: 50px; /* Ajuste conforme necessário */
+  margin-right: 10px; /* Espaço entre a imagem e o texto */
+}
+
+.newSection div {
+  display: flex;
+  flex-direction: column;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  border: 1px solid black; /* Borda preta englobando o conteúdo */
+  padding: 10px;
+  column-gap: 20px;
+}
+
+.headerContent img {
+  max-height: 50px; /* Ajuste conforme necessário */
+  margin-right: 10px; /* Espaço entre a imagem e o texto */
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #f9f9f9; /* Ajuste conforme necessário */
+  border-top: 1px solid #ddd;
+  row-gap: 15px;
+
+  div {
+    display: flex;
+    flex-direction: row;
+    column-gap: 5%;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .printableTable,
+  .printableTable * {
+    visibility: visible;
+  }
+
+  .printableTable {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* Esconde o botão de impressão durante a impressão */
+  .printButton {
+    display: none;
+  }
 }

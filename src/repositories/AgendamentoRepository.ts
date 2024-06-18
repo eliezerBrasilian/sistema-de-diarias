@@ -19,7 +19,7 @@ export class AgendamentoRepository {
     const mes = date.getMonth() + 1;
     const ano = date.getFullYear();
 
-    const todayFormated = `${dia - 1}/${mes}/${ano}`;
+    const todayFormated = `${dia}/${mes}/${ano}`;
 
     const q = query(
       collection(db, Collections.AGENDAMENTOS),

@@ -15,6 +15,7 @@ import { AgendamentosComponent } from "../components/AgendamentosComponent";
 import { FormCreateAgendamento } from "../components/FormCreateAgendamento";
 import { AgendamentoRequestDto } from "../types/AgendamentoRequestDto";
 import { Destino } from "../types/Destino";
+import { AppUtils } from "../utils/AppUtils";
 import { DestinationRepository } from "./../repositories/DestinationRepository";
 export function Home() {
   const { handleHomeBottomBar, activateVisibility } = useBottomBarContext();
@@ -87,16 +88,11 @@ export function Home() {
     ev.preventDefault();
 
     if (startDate != null && startDate != undefined) {
-      const dia = startDate.getDay();
-      const mes = startDate.getMonth() + 1;
-      const ano = startDate.getFullYear();
-      const formatedDate = `${dia}/${mes}/${ano}`;
-
       const agendamentoObj: AgendamentoRequestDto = {
         destino: destino,
         contato: contato.trim(),
         createdAt: Date.now(),
-        data: formatedDate,
+        data: AppUtils.DateToDayMonthYear(startDate),
         horario: horaio.trim(),
         motorista: "",
         nome_paciente: nome,

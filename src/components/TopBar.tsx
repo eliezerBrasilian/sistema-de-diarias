@@ -15,6 +15,7 @@ export function TopBar({ text }: TopBarProps) {
         columnGap: 40,
         alignItems: "center",
         width: "fit-content",
+        marginTop: 50,
       }}
     >
       <img

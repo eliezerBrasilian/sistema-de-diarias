@@ -1,3 +1,4 @@
+import { AgendamentoStatus } from "../enums/AgendamentoStatus";
 import { Destino } from "./Destino";
 
 export interface AgendamentoResponseDto {
@@ -10,7 +11,7 @@ export interface AgendamentoResponseDto {
   data: string;
   observacao: string;
   createdAt: number;
-  status: string;
+  status: AgendamentoStatus;
   motorista: string;
   veiculo: null | string;
 }
