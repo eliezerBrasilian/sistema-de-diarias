@@ -2,8 +2,6 @@ import { ChangeEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import InputMask from "react-input-mask";
-import { cores } from "../assets/cores";
-import { MunicipioInterno } from "../enums/MunicipiosInternos";
 import s from "../modules/FormCreateDiaria.module.css";
 
 interface FormCreateDiariaProps {
@@ -19,7 +17,7 @@ interface FormCreateDiariaProps {
   handleChangeVeiculo: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onChangeHorario: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeData: (date: Date | null) => void;
-  onClick: () => void;
+  
 }
 export function FormCreateDiaria({
   veiculoSelecionado,
@@ -34,8 +32,11 @@ export function FormCreateDiaria({
   handleChangeVeiculo,
   onChangeData,
   onChangeHorario,
-  onClick,
+  
 }: FormCreateDiariaProps) {
+
+  const veiculos = ["carro","van","onibus"]
+
   return (
     <div className={s.container}>
       <div className={s.input_container}>
@@ -45,47 +46,23 @@ export function FormCreateDiaria({
             border: "1px solid black",
             width: "fit-content",
             padding: 5,
-            backgroundColor: cores.rosa,
+          
           }}
           value={veiculoSelecionado}
           onChange={handleChangeVeiculo}
         >
-          <option
-            style={{ backgroundColor: "#fff" }}
-            value={MunicipioInterno.BRAS_PIRES_PRINCIPAL}
-          >
-            {MunicipioInterno.BRAS_PIRES_PRINCIPAL}
-          </option>
-          <option
-            style={{ backgroundColor: "#fff" }}
-            value={MunicipioInterno.MALACACHETA}
-          >
-            {MunicipioInterno.MALACACHETA}
-          </option>
-          <option
-            style={{ backgroundColor: "#fff" }}
-            value={MunicipioInterno.VARZEA}
-          >
-            {MunicipioInterno.VARZEA}
-          </option>
-          <option
-            style={{ backgroundColor: "#fff" }}
-            value={MunicipioInterno.RIBEIRAO}
-          >
-            {MunicipioInterno.RIBEIRAO}
-          </option>
+          {veiculos.map((i) => (
+            <option key={i} value={i}>
+              {i}
+            </option>
+          ))}
         </select>
       </div>
 
       <div className={s.input_container}>
         <p>Placa</p>
         <input
-          style={{
-            color: "#000",
-            padding: 5,
-            marginTop: 5,
-            border: "1px solid gray",
-          }}
+        
           type="text"
           placeholder="digite o nome da sua rua..."
           value={placa}
@@ -96,12 +73,7 @@ export function FormCreateDiaria({
       <div className={s.input_container}>
         <p>Modelo</p>
         <input
-          style={{
-            color: "#000",
-            padding: 5,
-            marginTop: 5,
-            border: "1px solid gray",
-          }}
+          
           type="text"
           placeholder="digite o numero da sua residência..."
           value={modelo}
@@ -112,12 +84,7 @@ export function FormCreateDiaria({
       <div className={s.input_container}>
         <p>Motorista escalado</p>
         <input
-          style={{
-            color: "#000",
-            padding: 5,
-            marginTop: 5,
-            border: "1px solid gray",
-          }}
+          
           type="text"
           placeholder="digite o nome do bairro..."
           value={motorista_escalado == null ? "" : motorista_escalado}

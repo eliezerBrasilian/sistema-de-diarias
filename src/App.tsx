@@ -3,6 +3,7 @@ import { AgendamentoContextProvider } from "./context/AgendamentoContext";
 import { AuthContextProvider } from "./context/AuthContext";
 import { BottomBarContextProvider } from "./context/BottomBarContext";
 import { CabecalhoContextProvider } from "./context/CabecalhoContext";
+import { DiariaContextProvider } from "./context/DiariaContext";
 import { RoutesApp } from "./routes/Routes";
 function App() {
   return (
@@ -10,7 +11,9 @@ function App() {
       <CabecalhoContextProvider>
         <BottomBarContextProvider>
           <AgendamentoContextProvider>
-            <RoutesApp />
+            <DiariaContextProvider>
+              <RoutesApp />
+            </DiariaContextProvider>
           </AgendamentoContextProvider>
         </BottomBarContextProvider>
       </CabecalhoContextProvider>

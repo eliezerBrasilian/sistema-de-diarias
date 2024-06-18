@@ -56,6 +56,7 @@ export class AgendamentoRepository {
         observacao: data.observacao,
         possui_acompanhante: data.possui_acompanhante,
         status: data.status,
+        veiculo: data.veiculo,
       });
     });
 
