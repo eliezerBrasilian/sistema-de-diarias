@@ -46,17 +46,15 @@ export class AgendamentoRepository {
       const data = doc.data();
       agendamentoList.push({
         id: doc.id,
-        destino: data.clinica_ou_hospital_de_destino,
+        destino: data.destino,
         contato: data.contato,
         createdAt: data.createdAt,
         data: data.data,
         horario: data.horario,
-        motorista: data.motorista,
         nome_paciente: data.nome_paciente,
         observacao: data.observacao,
         possui_acompanhante: data.possui_acompanhante,
         status: data.status,
-        veiculo: data.veiculo,
       });
     });
 

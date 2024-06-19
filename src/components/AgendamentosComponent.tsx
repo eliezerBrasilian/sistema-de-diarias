@@ -4,10 +4,14 @@ import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 interface AgendamentosProps {
   agendamentosList: AgendamentoResponseDto[];
 }
+
 export function AgendamentosComponent({ agendamentosList }: AgendamentosProps) {
   if (agendamentosList.length == 0) {
     return <p>Nenhum paciente agendado</p>;
   }
+
+  console.log("agendamentosList: ");
+  console.log(agendamentosList);
 
   return (
     <table className={tbstyle.table}>
@@ -23,7 +27,7 @@ export function AgendamentosComponent({ agendamentosList }: AgendamentosProps) {
         {agendamentosList.map((item) => (
           <tr key={item.id}>
             <td>{item.nome_paciente}</td>
-            <td>{item?.destino?.nome}</td>
+            <td>{item.destino?.nome}</td>
             <td>{item.horario}</td>
             <td>{item.contato}</td>
           </tr>

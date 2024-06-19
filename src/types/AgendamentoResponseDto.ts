@@ -12,6 +12,4 @@ export interface AgendamentoResponseDto {
   observacao: string;
   createdAt: number;
   status: AgendamentoStatus;
-  motorista: string;
-  veiculo: null | string;
 }
