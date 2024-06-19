@@ -7,10 +7,14 @@ import { DiariaDto } from "../types/DiariaDto";
 interface DiariaComponentProps {
   agendamentosList: AgendamentoResponseDto[];
   diaria: DiariaDto | undefined;
+  saveAndPrintDiaria: () => Promise<void>;
+  closeDiaria: () => void;
 }
 export function DiariaComponent({
   agendamentosList,
   diaria,
+  saveAndPrintDiaria,
+  closeDiaria,
 }: DiariaComponentProps) {
   if (agendamentosList.length == 0 || diaria == undefined) {
     return <p>Nenhum paciente agendado</p>;
@@ -104,24 +108,41 @@ export function DiariaComponent({
           </tfoot>
         </table>
       </div>
-      <button
+      <div
         style={{
           marginTop: 20,
           right: 15,
           position: "absolute",
-          background: "#89A7A7",
-          color: "#fff",
-          border: "none",
-          padding: "9px 20px 9px 20px",
-          borderRadius: 11,
-        }}
-        className={tbstyle.printButton}
-        onClick={() => {
-          window.print();
         }}
       >
-        Imprimir diária
-      </button>
+        <button
+          style={{
+            background: "red",
+            color: "#fff",
+            border: "none",
+            padding: "9px 20px 9px 20px",
+            borderRadius: 11,
+            marginRight: 20,
+          }}
+          className={tbstyle.printButton}
+          onClick={closeDiaria}
+        >
+          Fechar diaria
+        </button>
+        <button
+          style={{
+            color: "#fff",
+            border: "none",
+            padding: "9px 20px 9px 20px",
+            borderRadius: 11,
+            background: "#406E8E",
+          }}
+          className={tbstyle.printButton}
+          onClick={saveAndPrintDiaria}
+        >
+          Imprimir diária
+        </button>
+      </div>
     </div>
   );
 }

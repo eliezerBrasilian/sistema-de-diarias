@@ -14,7 +14,7 @@ export function TelaAdicionarNaDiaria() {
   const [modelo, setModelo] = useState("gol");
   const [placa, setPlaca] = useState("avg-5262");
   const [veiculoSelecionado, setVeiculoSelecionado] = useState("carro");
-  const [startDate, setDia] = useState<Date | null>(new Date());
+  const [data, setData] = useState<Date | null>(new Date());
   const [horario, setHorario] = useState("15:30");
 
   const [continuePressed, setContinuePressed] = useState(false);
@@ -22,7 +22,7 @@ export function TelaAdicionarNaDiaria() {
   const [diaria, setDiaria] = useState<DiariaDto>();
 
   const { agendamentos } = useAgendamentoContext();
-  const { diarias, getAll } = useDiariaContext();
+  const { diarias, getAll, cria } = useDiariaContext();
 
   const [pacientesNaDiariaState, setPacientesNaDiariaStateList] = useState<
     AgendamentoResponseDto[]
@@ -76,7 +76,7 @@ export function TelaAdicionarNaDiaria() {
   };
 
   const onChangeData = (date: Date | null) => {
-    setDia(date);
+    setData(date);
   };
 
   const onChangeHorario = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,9 +85,9 @@ export function TelaAdicionarNaDiaria() {
 
   const onClick = () => {
     setContinuePressed(!continuePressed);
-    if (startDate != null) {
+    if (data != null) {
       const newDiaria: DiariaDto = {
-        data: AppUtils.DateToDayMonthYear(startDate),
+        data: AppUtils.DateToDayMonthYear(data),
         horario: horario,
         modelo: modelo,
         id: "",
@@ -97,8 +97,21 @@ export function TelaAdicionarNaDiaria() {
         tipoVeiculo: veiculoSelecionado,
       };
 
+      console.log(newDiaria);
+
       setDiaria(newDiaria);
     }
+  };
+
+  const saveAndPrintDiaria = async () => {
+    if (diaria != undefined) {
+      await cria(diaria);
+      window.print();
+    }
+  };
+
+  const closeDiaria = () => {
+    setContinuePressed(false);
   };
 
   return (
@@ -108,6 +121,8 @@ export function TelaAdicionarNaDiaria() {
           <DiariaComponent
             agendamentosList={pacientesNaDiariaState}
             diaria={diaria}
+            saveAndPrintDiaria={saveAndPrintDiaria}
+            closeDiaria={closeDiaria}
           />
         </div>
       ) : (
@@ -122,7 +137,7 @@ export function TelaAdicionarNaDiaria() {
             }}
           >
             <FormCreateDiaria
-              data={startDate}
+              data={data}
               modelo={modelo}
               horario={horario}
               placa={placa}

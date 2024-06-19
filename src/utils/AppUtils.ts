@@ -3,10 +3,13 @@ import { ptBR } from "date-fns/locale";
 import { toast } from "react-toastify";
 export class AppUtils {
   static DateToDayMonthYear(date: Date) {
-    const dia = date.getDay();
-    const mes = date.getMonth() + 1;
+    const dia = date.getDate();
+    var mes = date.getMonth() + 1;
     const ano = date.getFullYear();
-    const formatedDate = `${dia}/${mes}/${ano}`;
+
+    const formatedDate = `${dia < 10 ? "0" + dia : dia}/${
+      mes < 10 ? "0" + mes : mes
+    }/${ano}`;
 
     return formatedDate;
   }

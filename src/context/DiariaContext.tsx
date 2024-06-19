@@ -8,7 +8,6 @@ interface DiariaContextInterface {
   cria: (diaria: DiariaDto) => Promise<void>;
   diarias: DiariaDto[];
 }
-
 const defaultDiariaContext: DiariaContextInterface = {
   getAll: () => {},
   cria: async (_diariaDto) => {},

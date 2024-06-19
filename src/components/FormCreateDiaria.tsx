@@ -17,7 +17,6 @@ interface FormCreateDiariaProps {
   handleChangeVeiculo: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onChangeHorario: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeData: (date: Date | null) => void;
-  
 }
 export function FormCreateDiaria({
   veiculoSelecionado,
@@ -32,10 +31,8 @@ export function FormCreateDiaria({
   handleChangeVeiculo,
   onChangeData,
   onChangeHorario,
-  
 }: FormCreateDiariaProps) {
-
-  const veiculos = ["carro","van","onibus"]
+  const veiculos = ["carro", "van", "onibus"];
 
   return (
     <div className={s.container}>
@@ -46,7 +43,6 @@ export function FormCreateDiaria({
             border: "1px solid black",
             width: "fit-content",
             padding: 5,
-          
           }}
           value={veiculoSelecionado}
           onChange={handleChangeVeiculo}
@@ -62,9 +58,8 @@ export function FormCreateDiaria({
       <div className={s.input_container}>
         <p>Placa</p>
         <input
-        
           type="text"
-          placeholder="digite o nome da sua rua..."
+          placeholder="digite o nome da placa..."
           value={placa}
           onChange={handlePlacaChange}
         />
@@ -73,7 +68,6 @@ export function FormCreateDiaria({
       <div className={s.input_container}>
         <p>Modelo</p>
         <input
-          
           type="text"
           placeholder="digite o numero da sua residência..."
           value={modelo}
@@ -84,9 +78,8 @@ export function FormCreateDiaria({
       <div className={s.input_container}>
         <p>Motorista escalado</p>
         <input
-          
           type="text"
-          placeholder="digite o nome do bairro..."
+          placeholder="digite o nome do motorista..."
           value={motorista_escalado == null ? "" : motorista_escalado}
           onChange={handleMotoristaChange}
         />
