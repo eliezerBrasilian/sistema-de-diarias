@@ -10,19 +10,13 @@ import {
 import { Collections } from "../enums/Collections";
 import { db } from "../firebase/config";
 import { DiariaDto } from "../types/DiariaDto";
+import { AppUtils } from "../utils/AppUtils";
 
 export class DiariaRepository {
   async getAll(): Promise<DiariaDto[]> {
-    const date = new Date();
-    const dia = date.getDay();
-    const mes = date.getMonth() + 1;
-    const ano = date.getFullYear();
-
-    const todayFormated = `${dia}/${mes}/${ano}`;
-
     const q = query(
       collection(db, Collections.DIARIAS),
-      where("data", "==", todayFormated)
+      where("data", "==", AppUtils.DateToDayMonthYear(new Date()))
     );
 
     try {

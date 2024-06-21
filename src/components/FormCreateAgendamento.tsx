@@ -24,8 +24,6 @@ interface FormCreateAgendamentoProps {
   handleChangeHospital: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-
-
 export function FormCreateAgendamento({
   handleCreateAgendamento,
   nome,
@@ -44,38 +42,40 @@ export function FormCreateAgendamento({
 }: FormCreateAgendamentoProps) {
   return (
     <form onSubmit={handleCreateAgendamento}>
-      <div className={hs.input_container}>
-        <p>Nome do paciente</p>
-        <input
-          type="text"
-          id="fname"
-          name="fname"
-          placeholder="Digite seu email"
-          value={nome}
-          onChange={onChangeName}
-        />
-      </div>
-      <div className={hs.input_container}>
-        <label>
-          <input
-            type="checkbox"
-            checked={temAcompanhante}
-            onChange={toogleAcompanhante}
-          />
-          Tem acompanhante?
-        </label>
-      </div>
+      <div className={hs.rowdivs}>
+        <div className={hs.column_div}>
+          <div className={hs.input_container}>
+            <p>Nome do paciente</p>
+            <input
+              type="text"
+              id="fname"
+              name="fname"
+              placeholder="Digite seu email"
+              value={nome}
+              onChange={onChangeName}
+            />
+          </div>
+          <div className={hs.input_container}>
+            <label>
+              <input
+                type="checkbox"
+                checked={temAcompanhante}
+                onChange={toogleAcompanhante}
+              />
+              Tem acompanhante?
+            </label>
+          </div>
 
-      <div className={hs.input_container}>
-        <p>Nome do Hospital/Clinica</p>
-        <select value={destino.nome} onChange={handleChangeHospital}>
-          {destinos.map((i) => (
-            <option key={i.nome} value={i.nome}>
-              {i.nome}
-            </option>
-          ))}
-        </select>
-        {/* <input
+          <div className={hs.input_container}>
+            <p>Nome do Hospital/Clinica</p>
+            <select value={destino.nome} onChange={handleChangeHospital}>
+              {destinos.map((i) => (
+                <option key={i.nome} value={i.nome}>
+                  {i.nome}
+                </option>
+              ))}
+            </select>
+            {/* <input
             type="text"
             id="lname"
             name="lname"
@@ -83,38 +83,41 @@ export function FormCreateAgendamento({
             value={destino}
             onChange={(e) => setDestino(e.target.value)}
           /> */}
-      </div>
+          </div>
+        </div>
+        <div className={hs.column_div}>
+          <div className={hs.input_container}>
+            <p>Celular para contato</p>
+            <InputMask
+              type="text"
+              mask="(99) 99999-9999"
+              placeholder={"(12)34567-8910"}
+              value={contato}
+              onChange={onChangeContato}
+            />
+          </div>
 
-      <div className={hs.input_container}>
-        <p>Celular para contato</p>
-        <InputMask
-          type="text"
-          mask="(99) 99999-9999"
-          placeholder={"(12)34567-8910"}
-          value={contato}
-          onChange={onChangeContato}
-        />
-      </div>
-
-      <div className={hs.input_container}>
-        <hr />
-        <p>Dia</p>
-        <DatePicker
-          selected={data}
-          onChange={onChangeData}
-          dateFormat="dd/MM/yyyy"
-          placeholderText="Escolha uma data"
-        />
-      </div>
-      <div className={hs.input_container}>
-        <p>Horário</p>
-        <InputMask
-          type="text"
-          mask="99:99"
-          placeholder={"horário do exame ou consulta"}
-          value={horario}
-          onChange={onChangeHorario}
-        />
+          <div className={hs.input_container}>
+            <hr />
+            <p>Dia</p>
+            <DatePicker
+              selected={data}
+              onChange={onChangeData}
+              dateFormat="dd/MM/yyyy"
+              placeholderText="Escolha uma data"
+            />
+          </div>
+          <div className={hs.input_container}>
+            <p>Horário</p>
+            <InputMask
+              type="text"
+              mask="99:99"
+              placeholder={"horário do exame ou consulta"}
+              value={horario}
+              onChange={onChangeHorario}
+            />
+          </div>
+        </div>
       </div>
 
       <CustomBtn

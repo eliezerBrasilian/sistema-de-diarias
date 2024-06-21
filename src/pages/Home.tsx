@@ -17,12 +17,15 @@ import { AgendamentoRequestDto } from "../types/AgendamentoRequestDto";
 import { Destino } from "../types/Destino";
 import { AppUtils } from "../utils/AppUtils";
 import { DestinationRepository } from "./../repositories/DestinationRepository";
+import { useDiariaContext } from "../context/DiariaContext";
+import { DiariaComponentEditable } from "../components/DiariaComponentEditable";
 export function Home() {
   const { handleHomeBottomBar, activateVisibility } = useBottomBarContext();
 
   const nav = useNavigate();
 
   const { cria, getAll, agendamentos } = useAgendamentoContext();
+  const { getAll: getAllDiarias, diarias } = useDiariaContext();
 
   const destinationRepository = new DestinationRepository();
 
@@ -44,6 +47,7 @@ export function Home() {
 
   useEffect(() => {
     getAll();
+    getAllDiarias();
   }, []);
 
   useEffect(() => {
@@ -143,9 +147,20 @@ export function Home() {
         />
       )}
 
-      <h1>Pacientes agendados</h1>
+      <h1 style={{ marginTop: 40, marginBottom: 5 }}>Pacientes agendados</h1>
 
       <AgendamentosComponent agendamentosList={agendamentos} />
+
+      <hr style={{ marginTop: 50, marginBottom: 50 }} />
+
+      <h1 style={{ marginBottom: 5 }}>Diarias criadas</h1>
+      {diarias.map((d, index) => (
+        <DiariaComponentEditable
+          key={index}
+          agendamentosList={agendamentos}
+          diaria={d}
+        />
+      ))}
     </div>
   );
 }
