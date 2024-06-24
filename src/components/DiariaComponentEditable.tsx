@@ -25,13 +25,6 @@ export function DiariaComponentEditable({
     return <p>Nenhum paciente agendado</p>;
   }
 
-  const [idCollected, setIdCollected] = useState("");
-  const [observacaoInputIsVisible, setObservacaoVisibility] = useState(false);
-
-  const toogleObservacaoVisibility = () => {
-    setObservacaoVisibility(!observacaoInputIsVisible);
-  };
-
   return (
     <div>
       <div className={tbstyle.printableTable}>
@@ -93,52 +86,7 @@ export function DiariaComponentEditable({
           </thead>
           <tbody>
             {agendamentosList.map((item) => (
-              <tr key={item.id}>
-                <td
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    rowGap: 15,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      columnGap: 15,
-                    }}
-                  >
-                    <p>{item.nome_paciente}</p>
-                    <CustomBtn text="Confirmar Ida" backgroundColor="#37718E" />
-                    <CustomBtn text="Cancelar Ida" backgroundColor="#C83E4D" />
-                  </div>
-                  <CustomBtn
-                    backgroundColor="#F4B860"
-                    text="Adicionar observacao"
-                    icon={
-                      observacaoInputIsVisible && idCollected == item.id
-                        ? up
-                        : down
-                    }
-                    onClick={() => {
-                      toogleObservacaoVisibility();
-                      setIdCollected(item.id);
-                    }}
-                  />
-                  {idCollected == item.id && observacaoInputIsVisible && (
-                    <textarea
-                      style={{
-                        width: "70%",
-                        minHeight: 60,
-                      }}
-                    />
-                  )}
-                </td>
-                <td>{item?.destino?.nome}</td>
-                <td>{item.horario}</td>
-                <td>{item.contato}</td>
-              </tr>
+              <DiariaComponentEditableItem item={item} />
             ))}
           </tbody>
           <tfoot>
@@ -197,5 +145,73 @@ export function DiariaComponentEditable({
         </button>
       </div>
     </div>
+  );
+}
+
+interface DiariaComponentEditableItemProps {
+  item: AgendamentoResponseDto;
+}
+export function DiariaComponentEditableItem({
+  item,
+}: DiariaComponentEditableItemProps) {
+  const [observacaoInputIsVisible, setObservacaoVisibility] = useState(false);
+
+  const toogleObservacaoVisibility = () => {
+    setObservacaoVisibility(!observacaoInputIsVisible);
+  };
+
+  const [observacaoInput, setObservacaoInput] = useState("");
+
+  const onChangeObservacaoInput = (
+    ev: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const text = ev.target.value;
+    setObservacaoInput(text);
+  };
+
+  return (
+    <tr key={item.id}>
+      <td
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          rowGap: 15,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            columnGap: 15,
+          }}
+        >
+          <p>{item.nome_paciente}</p>
+          <CustomBtn text="Confirmar Ida" backgroundColor="#37718E" />
+          <CustomBtn text="Cancelar Ida" backgroundColor="#C83E4D" />
+        </div>
+        <CustomBtn
+          backgroundColor="#F4B860"
+          text="Adicionar observacao"
+          icon={observacaoInputIsVisible ? up : down}
+          onClick={() => {
+            toogleObservacaoVisibility();
+          }}
+        />
+        {observacaoInputIsVisible && (
+          <textarea
+            value={observacaoInput}
+            onChange={onChangeObservacaoInput}
+            style={{
+              width: "70%",
+              minHeight: 60,
+            }}
+          />
+        )}
+      </td>
+      <td>{item?.destino?.nome}</td>
+      <td>{item.horario}</td>
+      <td>{item.contato}</td>
+    </tr>
   );
 }
