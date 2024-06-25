@@ -66,4 +66,19 @@ export class DiariaRepository {
       onError();
     }
   }
+
+  async confirmarIda(
+    diaria: DiariaDto,
+    onSuccess: () => void,
+    onError: () => void
+  ) {
+    try {
+      const docRef = await addDoc(collection(db, Collections.DIARIAS), diaria);
+      console.log("Document written with ID: ", docRef.id);
+      onSuccess();
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      onError();
+    }
+  }
 }

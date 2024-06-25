@@ -15,6 +15,7 @@ interface DiariaComponentEditableProps {
   saveAndPrintDiaria?: () => Promise<void>;
   closeDiaria?: () => void;
 }
+
 export function DiariaComponentEditable({
   agendamentosList,
   diaria,
