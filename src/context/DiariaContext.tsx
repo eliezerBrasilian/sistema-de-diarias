@@ -82,11 +82,9 @@ export function DiariaContextProvider({ children }: DiariaContextProps) {
       pacienteId,
       observacao,
       () => {
-        alert("atualizado no banco");
+        alert("ida confirmada com sucesso");
       },
-      () => {
-        alert("erro al atualizar no banco");
-      }
+      () => {}
     );
   }
 
