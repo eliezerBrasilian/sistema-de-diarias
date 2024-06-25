@@ -1,31 +1,21 @@
-import { useState } from "react";
 import carro from "../assets/car.png";
 import prefeitura_logo from "../assets/logo_brasao_prefeitura_bras_pires.jpg";
 import tbstyle from "../modules/Tabela.module.css";
-import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 import { DiariaDto } from "../types/DiariaDto";
-import { CustomBtn } from "./CustomBtn";
 
-import down from "../assets/down-arrows.png";
-import up from "../assets/up.png";
+import { DiariaComponentEditableItem } from "./DiariaComponentEditableItem";
 
 interface DiariaComponentEditableProps {
-  agendamentosList: AgendamentoResponseDto[];
-  diaria?: DiariaDto;
+  diaria: DiariaDto;
   saveAndPrintDiaria?: () => Promise<void>;
   closeDiaria?: () => void;
 }
 
 export function DiariaComponentEditable({
-  agendamentosList,
   diaria,
   saveAndPrintDiaria = undefined,
   closeDiaria = undefined,
 }: DiariaComponentEditableProps) {
-  if (agendamentosList.length == 0 || diaria == undefined) {
-    return <p>Nenhum paciente agendado</p>;
-  }
-
   return (
     <div>
       <div className={tbstyle.printableTable}>
@@ -86,8 +76,8 @@ export function DiariaComponentEditable({
             </tr>
           </thead>
           <tbody>
-            {agendamentosList.map((item) => (
-              <DiariaComponentEditableItem item={item} />
+            {diaria.pacientes.map((item) => (
+              <DiariaComponentEditableItem item={item} diariaId={diaria.id} />
             ))}
           </tbody>
           <tfoot>
@@ -146,73 +136,5 @@ export function DiariaComponentEditable({
         </button>
       </div>
     </div>
-  );
-}
-
-interface DiariaComponentEditableItemProps {
-  item: AgendamentoResponseDto;
-}
-export function DiariaComponentEditableItem({
-  item,
-}: DiariaComponentEditableItemProps) {
-  const [observacaoInputIsVisible, setObservacaoVisibility] = useState(false);
-
-  const toogleObservacaoVisibility = () => {
-    setObservacaoVisibility(!observacaoInputIsVisible);
-  };
-
-  const [observacaoInput, setObservacaoInput] = useState("");
-
-  const onChangeObservacaoInput = (
-    ev: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const text = ev.target.value;
-    setObservacaoInput(text);
-  };
-
-  return (
-    <tr key={item.id}>
-      <td
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          rowGap: 15,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            columnGap: 15,
-          }}
-        >
-          <p>{item.nome_paciente}</p>
-          <CustomBtn text="Confirmar Ida" backgroundColor="#37718E" />
-          <CustomBtn text="Cancelar Ida" backgroundColor="#C83E4D" />
-        </div>
-        <CustomBtn
-          backgroundColor="#F4B860"
-          text="Adicionar observacao"
-          icon={observacaoInputIsVisible ? up : down}
-          onClick={() => {
-            toogleObservacaoVisibility();
-          }}
-        />
-        {observacaoInputIsVisible && (
-          <textarea
-            value={observacaoInput}
-            onChange={onChangeObservacaoInput}
-            style={{
-              width: "70%",
-              minHeight: 60,
-            }}
-          />
-        )}
-      </td>
-      <td>{item?.destino?.nome}</td>
-      <td>{item.horario}</td>
-      <td>{item.contato}</td>
-    </tr>
   );
 }

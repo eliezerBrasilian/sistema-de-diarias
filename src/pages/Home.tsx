@@ -155,11 +155,7 @@ export function Home() {
 
       <h1 style={{ marginBottom: 5 }}>Diarias criadas</h1>
       {diarias.map((d, index) => (
-        <DiariaComponentEditable
-          key={index}
-          agendamentosList={agendamentos}
-          diaria={d}
-        />
+        <DiariaComponentEditable key={index} diaria={d} />
       ))}
     </div>
   );

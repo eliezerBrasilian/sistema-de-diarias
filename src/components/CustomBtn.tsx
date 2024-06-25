@@ -32,6 +32,7 @@ export function CustomBtn({
           columnGap: 5,
           width: width,
           color: "#fff",
+          cursor: "pointer",
         }}
       >
         <Imagem imagePath={icon} height={20} width={20} />
@@ -52,6 +53,7 @@ export function CustomBtn({
           alignItems: "center",
           width: width,
           color: "#fff",
+          cursor: "pointer",
         }}
       >
         {text}

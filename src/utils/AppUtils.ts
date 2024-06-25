@@ -2,6 +2,18 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "react-toastify";
 export class AppUtils {
+  static FormatPhone(phone: string) {
+    if (phone.length !== 11) {
+      throw new Error("O número deve ter 11 dígitos.");
+    }
+
+    const ddd = phone.slice(0, 2);
+    const primeiraParte = phone.slice(2, 7);
+    const segundaParte = phone.slice(7, 11);
+
+    return `(${ddd}) ${primeiraParte}-${segundaParte}`;
+  }
+
   static DateToDayMonthYear(date: Date) {
     const dia = date.getDate();
     var mes = date.getMonth() + 1;

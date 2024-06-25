@@ -6,11 +6,21 @@ import { DiariaRepository } from "../repositories/DiariaRepository";
 interface DiariaContextInterface {
   getAll: () => void;
   cria: (diaria: DiariaDto) => Promise<void>;
+  confirmaIda: (
+    diariaId: string,
+    pacienteId: string,
+    observacao: string
+  ) => Promise<void>;
   diarias: DiariaDto[];
 }
 const defaultDiariaContext: DiariaContextInterface = {
   getAll: () => {},
   cria: async (_diariaDto) => {},
+  confirmaIda: async (
+    _diariaId: string,
+    _pacienteId: string,
+    _observacao: string
+  ) => {},
   diarias: [],
 };
 
@@ -61,11 +71,31 @@ export function DiariaContextProvider({ children }: DiariaContextProps) {
     }
   }
 
+  async function confirmaIda(
+    diariaId: string,
+    pacienteId: string,
+    observacao: string
+  ) {
+    //alert(`${diariaId} - ${pacienteId} - ${observacao}`);
+    diariaRepository.confirmarIda(
+      diariaId,
+      pacienteId,
+      observacao,
+      () => {
+        alert("atualizado no banco");
+      },
+      () => {
+        alert("erro al atualizar no banco");
+      }
+    );
+  }
+
   return (
     <DiariaContext.Provider
       value={{
         getAll,
         cria,
+        confirmaIda,
         diarias,
       }}
     >
