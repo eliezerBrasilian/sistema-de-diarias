@@ -15,8 +15,25 @@ import { db } from "../firebase/config";
 import { DiariaDto } from "../types/DiariaDto";
 import { AppUtils } from "../utils/AppUtils";
 import { AgendamentoStatus } from "../enums/AgendamentoStatus";
+import { PacienteUpdateDto } from "../types/PacienteUpdateDto";
 
 export class DiariaRepository {
+  async getDocumentById(diariaId: string): Promise<DiariaDto | null> {
+    try {
+      const diariaRef = doc(db, Collections.DIARIAS, diariaId);
+      const diariaSnap = await getDoc(diariaRef);
+
+      if (diariaSnap.exists()) {
+        const diariaData = diariaSnap.data() as DiariaDto;
+        return diariaData;
+      } else {
+        return null;
+      }
+    } catch (e: unknown) {
+      return null;
+    }
+  }
+
   async getAll(): Promise<DiariaDto[]> {
     const q = query(
       collection(db, Collections.DIARIAS),
@@ -74,7 +91,7 @@ export class DiariaRepository {
   async confirmarIda(
     diariaId: string,
     pacienteId: string,
-    observacao: string,
+    novosDados: PacienteUpdateDto,
     onSuccess: () => void,
     onError: () => void
   ) {
@@ -82,15 +99,43 @@ export class DiariaRepository {
       const diariaRef = doc(db, Collections.DIARIAS, diariaId);
       const diariaSnap = await getDoc(diariaRef);
 
-      const novosDados = {
-        observacao: observacao,
-        status: AgendamentoStatus.CONFIRMADO,
-      };
-
       if (diariaSnap.exists()) {
         const diariaData = diariaSnap.data() as DiariaDto;
         const pacientesAtualizados = diariaData.pacientes.map((paciente) =>
           paciente.id === pacienteId ? { ...paciente, ...novosDados } : paciente
+        );
+
+        await updateDoc(diariaRef, {
+          pacientes: pacientesAtualizados,
+        });
+
+        console.log("Paciente atualizado com sucesso no Firestore!");
+        onSuccess();
+      } else {
+        console.log("Diária não encontrada!");
+        onError();
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar paciente no Firestore: ", error);
+      onError();
+    }
+  }
+  async cancelarIda(
+    diariaId: string,
+    pacienteId: string,
+    onSuccess: () => void,
+    onError: () => void
+  ) {
+    try {
+      const diariaRef = doc(db, Collections.DIARIAS, diariaId);
+      const diariaSnap = await getDoc(diariaRef);
+
+      if (diariaSnap.exists()) {
+        const diariaData = diariaSnap.data() as DiariaDto;
+        const pacientesAtualizados = diariaData.pacientes.map((paciente) =>
+          paciente.id === pacienteId
+            ? { ...paciente, status: AgendamentoStatus.CANCELADO }
+            : paciente
         );
 
         await updateDoc(diariaRef, {

@@ -1,21 +1,26 @@
+import { useNavigate } from "react-router-dom";
 import carro from "../assets/car.png";
 import prefeitura_logo from "../assets/logo_brasao_prefeitura_bras_pires.jpg";
 import tbstyle from "../modules/Tabela.module.css";
 import { DiariaDto } from "../types/DiariaDto";
 
 import { DiariaComponentEditableItem } from "./DiariaComponentEditableItem";
+import { Rotas } from "../enums/Rotas";
 
 interface DiariaComponentEditableProps {
   diaria: DiariaDto;
   saveAndPrintDiaria?: () => Promise<void>;
-  closeDiaria?: () => void;
 }
 
 export function DiariaComponentEditable({
   diaria,
   saveAndPrintDiaria = undefined,
-  closeDiaria = undefined,
 }: DiariaComponentEditableProps) {
+  const navigate = useNavigate();
+
+  const navigateToVisualizarDiaria = () => {
+    navigate(`${Rotas.TELA_VISUALIZAR_DIARIA}/${diaria.id}`);
+  };
   return (
     <div>
       <div className={tbstyle.printableTable}>
@@ -117,9 +122,11 @@ export function DiariaComponentEditable({
             marginRight: 20,
           }}
           className={tbstyle.printButton}
-          onClick={closeDiaria}
+          onClick={() => {
+            alert("funcao nao disponivel no momento");
+          }}
         >
-          Fechar diaria
+          Excluir diaria
         </button>
         <button
           style={{
@@ -130,9 +137,9 @@ export function DiariaComponentEditable({
             background: "#406E8E",
           }}
           className={tbstyle.printButton}
-          onClick={saveAndPrintDiaria}
+          onClick={navigateToVisualizarDiaria}
         >
-          Imprimir diária
+          Visualizar diária
         </button>
       </div>
     </div>

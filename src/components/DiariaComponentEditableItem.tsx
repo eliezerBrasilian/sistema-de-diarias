@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { CustomBtn } from "./CustomBtn";
 import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 
 import down from "../assets/down-arrows.png";
 import up from "../assets/up.png";
-import check from "../assets/check.png";
-import warning from "../assets/warning.png";
 import { useDiariaContext } from "../context/DiariaContext";
 import { AppUtils } from "../utils/AppUtils";
-import { AgendamentoStatus } from "../enums/AgendamentoStatus";
+import { StatusItemOrButton } from "./StatusItemOrButton";
+import { ButtonStatus } from "../enums/ButtonStatus";
+import { ObservacaoField } from "./ObservacaoField";
 
 interface DiariaComponentEditableItemProps {
   diariaId: string;
@@ -18,16 +17,13 @@ export function DiariaComponentEditableItem({
   diariaId,
   item,
 }: DiariaComponentEditableItemProps) {
-  const { confirmaIda } = useDiariaContext();
+  const { confirmaIda, cancelaIda } = useDiariaContext();
 
   const [observacaoInputIsVisible, setObservacaoVisibility] = useState(false);
 
   const toogleObservacaoVisibility = () => {
     setObservacaoVisibility(!observacaoInputIsVisible);
   };
-
-  console.log("----------item-----------");
-  console.log(item);
 
   const [observacaoInput, setObservacaoInput] = useState(item.observacao);
 
@@ -38,8 +34,12 @@ export function DiariaComponentEditableItem({
     setObservacaoInput(text);
   };
 
-  const handleConfirmaDiaria = async () => {
-    confirmaIda(diariaId, item.id, observacaoInput.trim());
+  const handleConfirmaIda = async () => {
+    await confirmaIda(diariaId, item.id, observacaoInput.trim());
+  };
+
+  const handleCancelaIda = async () => {
+    await cancelaIda(diariaId, item.id);
   };
 
   return (
@@ -60,41 +60,26 @@ export function DiariaComponentEditableItem({
           }}
         >
           <p>{item.nome_paciente}</p>
-          {item.status != AgendamentoStatus.CONFIRMADO ? (
-            <CustomBtn
-              text="Confirmar Ida"
-              backgroundColor="#37718E"
-              onClick={handleConfirmaDiaria}
-            />
-          ) : (
-            <div
-              style={{ display: "flex", alignItems: "center", columnGap: 10 }}
-            >
-              <p style={{ fontWeight: "bold" }}>Ja confirmado</p>
-              <img src={check} style={{ height: 27, width: 27 }} />
-            </div>
-          )}
-
-          <CustomBtn text="Cancelar Ida" backgroundColor="#C83E4D" />
+          <StatusItemOrButton
+            status={item.status}
+            buttonText="Confirmar Ida"
+            buttonStatus={ButtonStatus.CONFIRM}
+            onClick={handleConfirmaIda}
+          />
+          <StatusItemOrButton
+            status={item.status}
+            buttonText="Cancelar Ida"
+            buttonStatus={ButtonStatus.CANCEL}
+            onClick={handleCancelaIda}
+          />
         </div>
 
-        {item.observacao == "" ? (
-          <CustomBtn
-            backgroundColor="#F4B860"
-            text="Adicionar observacao"
-            icon={observacaoInputIsVisible ? up : down}
-            onClick={() => {
-              toogleObservacaoVisibility();
-            }}
-          />
-        ) : (
-          <div style={{ display: "flex", alignItems: "center", columnGap: 2 }}>
-            <img src={warning} style={{ height: 17, width: 17 }} />
-            <p style={{ fontStyle: "italic", fontSize: 16 }}>
-              {item.observacao}
-            </p>
-          </div>
-        )}
+        <ObservacaoField
+          icon={observacaoInputIsVisible ? up : down}
+          observacao={observacaoInput}
+          onClick={toogleObservacaoVisibility}
+          status={item.status}
+        />
 
         {observacaoInputIsVisible && (
           <textarea

@@ -7,9 +7,10 @@ import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { TelaAdicionarNaDiaria } from "../pages/TelaAdicionarNaDiaria";
 import { TelaPerfil } from "../pages/TelaPerfil";
+import { TelaVisualizarDiaria } from "../pages/TelaVisualizarDiaria";
 
 export function RoutesApp() {
-  // const rotaItemSelecionado = Rotas.TELA_ITEM_SELECIONADO + "/:id";
+  const rotaDiariaSelecionada = Rotas.TELA_VISUALIZAR_DIARIA + "/:id";
   // const rotaVerChavePix = Rotas.TELA_VER_CHAVE_PIX + "/:chave";
   // const rotaDetalhesDoPedido = Rotas.TELA_DETALHES_DO_PEDIDO + "/:id";
 
@@ -26,6 +27,11 @@ export function RoutesApp() {
         <Route
           path={Rotas.TELA_MONTAR_DIARIA}
           element={<TelaAdicionarNaDiaria />}
+        />
+
+        <Route
+          path={rotaDiariaSelecionada}
+          element={<TelaVisualizarDiaria />}
         />
       </Routes>
       {/* <BottomBar /> */}

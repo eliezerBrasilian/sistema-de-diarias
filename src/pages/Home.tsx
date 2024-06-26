@@ -25,7 +25,7 @@ export function Home() {
   const nav = useNavigate();
 
   const { cria, getAll, agendamentos } = useAgendamentoContext();
-  const { getAll: getAllDiarias, diarias } = useDiariaContext();
+  const { getAll: getAllDiarias, diarias, reloadDiaria } = useDiariaContext();
 
   const destinationRepository = new DestinationRepository();
 
@@ -44,6 +44,12 @@ export function Home() {
     activateVisibility();
     handleHomeBottomBar();
   }, []);
+
+  // useEffect(() => {
+  //   if (reloadDiaria) {
+  //     getAllDiarias();
+  //   }
+  // }, [reloadDiaria]);
 
   useEffect(() => {
     getAll();
