@@ -25,7 +25,7 @@ export function Home() {
   const nav = useNavigate();
 
   const { cria, getAll, agendamentos } = useAgendamentoContext();
-  const { getAll: getAllDiarias, diarias, reloadDiaria } = useDiariaContext();
+  const { getAll: getAllDiarias, diarias } = useDiariaContext();
 
   const destinationRepository = new DestinationRepository();
 
@@ -40,16 +40,11 @@ export function Home() {
   const [horaio, setHorario] = useState("15:30");
 
   const [expanded, setExpanded] = useState(false);
+
   useEffect(() => {
     activateVisibility();
     handleHomeBottomBar();
   }, []);
-
-  // useEffect(() => {
-  //   if (reloadDiaria) {
-  //     getAllDiarias();
-  //   }
-  // }, [reloadDiaria]);
 
   useEffect(() => {
     getAll();

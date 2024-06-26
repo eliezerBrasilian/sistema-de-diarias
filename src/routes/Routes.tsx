@@ -11,8 +11,6 @@ import { TelaVisualizarDiaria } from "../pages/TelaVisualizarDiaria";
 
 export function RoutesApp() {
   const rotaDiariaSelecionada = Rotas.TELA_VISUALIZAR_DIARIA + "/:id";
-  // const rotaVerChavePix = Rotas.TELA_VER_CHAVE_PIX + "/:chave";
-  // const rotaDetalhesDoPedido = Rotas.TELA_DETALHES_DO_PEDIDO + "/:id";
 
   return (
     <BrowserRouter>
@@ -34,7 +32,6 @@ export function RoutesApp() {
           element={<TelaVisualizarDiaria />}
         />
       </Routes>
-      {/* <BottomBar /> */}
     </BrowserRouter>
   );
 }

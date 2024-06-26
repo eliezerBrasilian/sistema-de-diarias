@@ -9,12 +9,10 @@ import { Rotas } from "../enums/Rotas";
 
 interface DiariaComponentEditableProps {
   diaria: DiariaDto;
-  saveAndPrintDiaria?: () => Promise<void>;
 }
 
 export function DiariaComponentEditable({
   diaria,
-  saveAndPrintDiaria = undefined,
 }: DiariaComponentEditableProps) {
   const navigate = useNavigate();
 
@@ -82,7 +80,11 @@ export function DiariaComponentEditable({
           </thead>
           <tbody>
             {diaria.pacientes.map((item) => (
-              <DiariaComponentEditableItem item={item} diariaId={diaria.id} />
+              <DiariaComponentEditableItem
+                key={item.id}
+                item={item}
+                diariaId={diaria.id}
+              />
             ))}
           </tbody>
           <tfoot>

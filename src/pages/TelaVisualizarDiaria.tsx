@@ -12,13 +12,11 @@ export function TelaVisualizarDiaria() {
   const { getDocumentById } = useDiariaContext();
   const [diaria, setDiaria] = useState<DiariaDto | null>(null);
 
-  if (id == undefined || diaria == null) {
+  if (id == undefined) {
     return <h1>Diaria nao encontrada</h1>;
   }
 
-  alert(id);
   useEffect(() => {
-    console.log("aqui");
     async function loadDiaria() {
       if (id != undefined) {
         console.log("aqui");
@@ -27,7 +25,7 @@ export function TelaVisualizarDiaria() {
       }
     }
     loadDiaria();
-  }, []);
+  }, [id]);
 
   return (
     <div>
