@@ -81,7 +81,10 @@ export function DiariaComponent({
           <tbody>
             {agendamentosList.map((item) => (
               <tr key={item.id}>
-                <td>{item.nome_paciente}</td>
+                <td>
+                  <p> {item.nome_paciente}</p>
+                  {item.possui_acompanhante && <p>POSSUI ACOMPANHANTE</p>}
+                </td>
                 <td>{item?.destino?.nome}</td>
                 <td>{item.horario}</td>
                 <td>{item.contato}</td>

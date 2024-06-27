@@ -90,7 +90,34 @@ export function TelaVisualizarDiaria() {
             <tbody>
               {diaria.pacientes.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.nome_paciente}</td>
+                  <td>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        rowGap: 10,
+                      }}
+                    >
+                      <p> {item.nome_paciente}</p>
+                      {item.possui_acompanhante && (
+                        <p
+                          style={{
+                            fontWeight: "bold",
+                            fontStyle: "italic",
+                            fontSize: 12,
+                          }}
+                        >
+                          {"> POSSUI ACOMPANHANTE"}
+                        </p>
+                      )}
+
+                      {item.observacao != "" && (
+                        <p style={{ fontStyle: "italic" }}>
+                          --- {item.observacao}
+                        </p>
+                      )}
+                    </div>
+                  </td>
                   <td>{item?.destino?.nome}</td>
                   <td>{item.horario}</td>
                   <td>{item.contato}</td>
