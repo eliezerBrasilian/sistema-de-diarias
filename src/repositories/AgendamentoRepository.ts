@@ -66,6 +66,7 @@ export class AgendamentoRepository {
         agendamentoRequestDto
       );
       console.log("Document written with ID: ", docRef.id);
+
       onSuccess();
     } catch (e) {
       console.error("Error adding document: ", e);

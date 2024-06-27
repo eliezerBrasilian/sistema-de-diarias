@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 
 import down from "../assets/down-arrows.png";
@@ -34,8 +34,16 @@ export function DiariaComponentEditableItem({
     setObservacaoInput(text);
   };
 
+  useEffect(() => {
+    console.log("diaraId: " + diariaId);
+    console.log(item);
+    console.log(item.id);
+    console.log(item.status);
+  }, []);
+
   const handleConfirmaIda = async () => {
-    await confirmaIda(diariaId, item.id, observacaoInput.trim());
+    alert(item.id);
+    //await confirmaIda(diariaId, item.id, observacaoInput.trim());
   };
 
   const handleCancelaIda = async () => {
