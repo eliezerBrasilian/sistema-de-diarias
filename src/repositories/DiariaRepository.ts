@@ -25,6 +25,12 @@ export class DiariaRepository {
 
       if (diariaSnap.exists()) {
         const diariaData = diariaSnap.data() as DiariaDto;
+
+        const somenteConfirmados = diariaData.pacientes.filter(
+          (paciente) => paciente.status == AgendamentoStatus.CONFIRMADO
+        );
+
+        diariaData.pacientes = somenteConfirmados;
         return diariaData;
       } else {
         return null;
@@ -79,8 +85,10 @@ export class DiariaRepository {
     onError: () => void
   ) {
     try {
+      console.log(diaria);
       const docRef = await addDoc(collection(db, Collections.DIARIAS), diaria);
       console.log("Document written with ID: ", docRef.id);
+
       onSuccess();
     } catch (e) {
       console.error("Error adding document: ", e);

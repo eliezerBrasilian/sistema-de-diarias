@@ -51,7 +51,8 @@ export function DiariaContextProvider({ children }: DiariaContextProps) {
 
   async function getAll() {
     const lista: Array<DiariaDto> = await diariaRepository.getAll();
-
+    console.log("DIARIA LIST");
+    console.log(lista);
     setDiarias(lista);
     setReloadDiaria(false);
   }

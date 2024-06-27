@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 
 import down from "../assets/down-arrows.png";
@@ -8,17 +8,20 @@ import { AppUtils } from "../utils/AppUtils";
 import { StatusItemOrButton } from "./StatusItemOrButton";
 import { ButtonStatus } from "../enums/ButtonStatus";
 import { ObservacaoField } from "./ObservacaoField";
+import { CustomBtn } from "./CustomBtn";
 
 interface DiariaComponentEditableItemProps {
   diariaId: string;
   item: AgendamentoResponseDto;
 }
+
 export function DiariaComponentEditableItem({
   diariaId,
   item,
 }: DiariaComponentEditableItemProps) {
   const { confirmaIda, cancelaIda } = useDiariaContext();
 
+  const [observacaoInicial, setObservacaoInicial] = useState(item.observacao);
   const [observacaoInputIsVisible, setObservacaoVisibility] = useState(false);
 
   const toogleObservacaoVisibility = () => {
@@ -34,16 +37,11 @@ export function DiariaComponentEditableItem({
     setObservacaoInput(text);
   };
 
-  useEffect(() => {
-    console.log("diaraId: " + diariaId);
-    console.log(item);
-    console.log(item.id);
-    console.log(item.status);
-  }, []);
-
   const handleConfirmaIda = async () => {
-    alert(item.id);
-    //await confirmaIda(diariaId, item.id, observacaoInput.trim());
+    console.log(item.id);
+    await confirmaIda(diariaId, item.id, observacaoInput.trim());
+    setObservacaoInicial(item.observacao);
+    toogleObservacaoVisibility();
   };
 
   const handleCancelaIda = async () => {
@@ -84,20 +82,31 @@ export function DiariaComponentEditableItem({
 
         <ObservacaoField
           icon={observacaoInputIsVisible ? up : down}
+          observacaoInputIsVisible={observacaoInputIsVisible}
+          observacaoInicial={observacaoInicial}
           observacao={observacaoInput}
           onClick={toogleObservacaoVisibility}
           status={item.status}
         />
 
         {observacaoInputIsVisible && (
-          <textarea
-            value={observacaoInput}
-            onChange={onChangeObservacaoInput}
-            style={{
-              width: "70%",
-              minHeight: 60,
-            }}
-          />
+          <div>
+            <textarea
+              value={observacaoInput}
+              onChange={onChangeObservacaoInput}
+              style={{
+                width: "70%",
+                minHeight: 60,
+              }}
+            />
+            {observacaoInput.trim() != "" && (
+              <CustomBtn
+                text="Salvar observacao"
+                backgroundColor="#79AEA3"
+                onClick={handleConfirmaIda}
+              />
+            )}
+          </div>
         )}
       </td>
       <td>{item?.destino?.nome}</td>

@@ -106,7 +106,7 @@ export function TelaAdicionarNaDiaria() {
   const saveAndPrintDiaria = async () => {
     if (diaria != undefined) {
       await cria(diaria);
-      window.print();
+      // window.print();
     }
   };
 

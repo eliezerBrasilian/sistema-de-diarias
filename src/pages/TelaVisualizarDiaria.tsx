@@ -12,10 +12,6 @@ export function TelaVisualizarDiaria() {
   const { getDocumentById } = useDiariaContext();
   const [diaria, setDiaria] = useState<DiariaDto | null>(null);
 
-  if (id == undefined) {
-    return <h1>Diaria nao encontrada</h1>;
-  }
-
   useEffect(() => {
     async function loadDiaria() {
       if (id != undefined) {
@@ -27,10 +23,14 @@ export function TelaVisualizarDiaria() {
     loadDiaria();
   }, [id]);
 
+  if (id == undefined) {
+    return <h1 style={{ marginTop: 70 }}>Diaria nao encontrada</h1>;
+  }
+
   if (diaria != null)
     return (
       <div>
-        <div className={tbstyle.printableTable}>
+        <div className={tbstyle.printableTable} style={{ marginTop: 70 }}>
           <table className={tbstyle.table}>
             <thead>
               <tr>
@@ -147,7 +147,9 @@ export function TelaVisualizarDiaria() {
               background: "#406E8E",
             }}
             className={tbstyle.printButton}
-            onClick={() => {}}
+            onClick={() => {
+              window.print();
+            }}
           >
             Imprimir diária
           </button>
