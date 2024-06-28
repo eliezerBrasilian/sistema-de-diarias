@@ -10,6 +10,7 @@ interface DiariaComponentProps {
   saveAndPrintDiaria?: () => Promise<void>;
   closeDiaria?: () => void;
 }
+
 export function DiariaComponent({
   agendamentosList,
   diaria,

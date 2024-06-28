@@ -14,10 +14,10 @@ import { AgendamentoRequestDto } from "./../types/AgendamentoRequestDto";
 import { AppUtils } from "../utils/AppUtils";
 
 export class AgendamentoRepository {
-  async getAll(): Promise<AgendamentoResponseDto[]> {
+  async getAll(date: Date): Promise<AgendamentoResponseDto[]> {
     const q = query(
       collection(db, Collections.AGENDAMENTOS),
-      where("data", "==", AppUtils.DateToDayMonthYear(new Date()))
+      where("data", "==", AppUtils.DateToDayMonthYear(date))
     );
 
     try {

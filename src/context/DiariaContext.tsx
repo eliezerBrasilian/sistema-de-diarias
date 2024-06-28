@@ -6,7 +6,7 @@ import { AgendamentoStatus } from "../enums/AgendamentoStatus";
 import { PacienteUpdateDto } from "../types/PacienteUpdateDto";
 
 interface DiariaContextInterface {
-  getAll: () => void;
+  getAll: (data: Date) => void;
   getDocumentById(id: string): Promise<DiariaDto | null>;
   cria: (diaria: DiariaDto) => Promise<void>;
   confirmaIda: (
@@ -20,7 +20,7 @@ interface DiariaContextInterface {
 }
 
 const defaultDiariaContext: DiariaContextInterface = {
-  getAll: () => {},
+  getAll: (_data: Date) => {},
   getDocumentById: async (_id: string) => null,
   cria: async (_diariaDto) => {},
   confirmaIda: async (
@@ -49,8 +49,8 @@ export function DiariaContextProvider({ children }: DiariaContextProps) {
 
   const diariaRepository = new DiariaRepository();
 
-  async function getAll() {
-    const lista: Array<DiariaDto> = await diariaRepository.getAll();
+  async function getAll(data: Date) {
+    const lista: Array<DiariaDto> = await diariaRepository.getAll(data);
     console.log("DIARIA LIST");
     console.log(lista);
     setDiarias(lista);

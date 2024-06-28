@@ -19,6 +19,10 @@ import { AppUtils } from "../utils/AppUtils";
 import { DestinationRepository } from "./../repositories/DestinationRepository";
 import { useDiariaContext } from "../context/DiariaContext";
 import { DiariaComponentEditable } from "../components/DiariaComponentEditable";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 export function Home() {
   const { handleHomeBottomBar, activateVisibility } = useBottomBarContext();
 
@@ -41,15 +45,25 @@ export function Home() {
 
   const [expanded, setExpanded] = useState(false);
 
+  const [dateToSearching, setDateToSearching] = useState<Date | null>(
+    new Date()
+  );
+
   useEffect(() => {
     activateVisibility();
     handleHomeBottomBar();
   }, []);
 
   useEffect(() => {
-    getAll();
-    getAllDiarias();
-  }, []);
+    async function getData() {
+      if (dateToSearching != null) {
+        await getAll(dateToSearching);
+        await getAllDiarias(dateToSearching);
+      }
+    }
+
+    getData();
+  }, [dateToSearching]);
 
   useEffect(() => {
     var token = localStorage.getItem(LocalStorageKeys.TOKEN);
@@ -78,6 +92,9 @@ export function Home() {
   };
   const onChangeData = (date: Date | null) => {
     setDia(date);
+  };
+  const onChangeDataToSearching = (date: Date | null) => {
+    setDateToSearching(date);
   };
   const onChangeHorario = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHorario(e.target.value);
@@ -148,7 +165,23 @@ export function Home() {
         />
       )}
 
-      <h1 style={{ marginTop: 40, marginBottom: 5 }}>Pacientes agendados</h1>
+      <div
+        style={{
+          display: "flex",
+          columnGap: 10,
+          alignItems: "center",
+          marginTop: 40,
+          marginBottom: 15,
+        }}
+      >
+        <h1>Pacientes agendados</h1>
+        <DatePicker
+          selected={dateToSearching}
+          onChange={onChangeDataToSearching}
+          dateFormat="dd/MM/yyyy"
+          placeholderText="Escolha uma data"
+        />
+      </div>
 
       <AgendamentosComponent agendamentosList={agendamentos} />
 

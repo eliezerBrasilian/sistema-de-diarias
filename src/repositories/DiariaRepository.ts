@@ -40,10 +40,10 @@ export class DiariaRepository {
     }
   }
 
-  async getAll(): Promise<DiariaDto[]> {
+  async getAll(date: Date): Promise<DiariaDto[]> {
     const q = query(
       collection(db, Collections.DIARIAS),
-      where("data", "==", AppUtils.DateToDayMonthYear(new Date()))
+      where("data", "==", AppUtils.DateToDayMonthYear(date))
     );
 
     try {

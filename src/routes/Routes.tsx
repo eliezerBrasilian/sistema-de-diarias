@@ -6,7 +6,6 @@ import { Rotas } from "../enums/Rotas";
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { TelaAdicionarNaDiaria } from "../pages/TelaAdicionarNaDiaria";
-import { TelaPerfil } from "../pages/TelaPerfil";
 import { TelaVisualizarDiaria } from "../pages/TelaVisualizarDiaria";
 
 export function RoutesApp() {
@@ -19,8 +18,6 @@ export function RoutesApp() {
       <Routes>
         <Route path={Rotas.LOGIN} element={<Login />} />
         <Route path={Rotas.HOME} element={<Home />} />
-
-        <Route path={Rotas.TELA_PERFIL} element={<TelaPerfil />} />
 
         <Route
           path={Rotas.TELA_MONTAR_DIARIA}
