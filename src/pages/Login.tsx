@@ -8,8 +8,8 @@ import { Rotas } from "../enums/Rotas.js";
 import ls from "../modules/Login.module.css";
 
 export function Login() {
-  const [email, setEmail] = useState("saudebraspires@gmail.com");
-  const [senha, setSenha] = useState("authbp123");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
   const nav = useNavigate();
 
