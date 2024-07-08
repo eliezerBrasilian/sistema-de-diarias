@@ -6,13 +6,13 @@ import { AgendamentoRequestDto } from "../types/AgendamentoRequestDto";
 import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 
 interface AgendamentoContextInterface {
-  getAll: () => void;
+  getAll: (date: Date) => Promise<AgendamentoResponseDto[]>;
   cria: (agendamentoRequestDto: AgendamentoRequestDto) => Promise<void>;
   agendamentos: AgendamentoResponseDto[];
 }
 
 const defaultAgendamentoContext: AgendamentoContextInterface = {
-  getAll: () => {},
+  getAll: async (_date: Date) => [],
   cria: async (_agendamentoRequestDto) => {},
   agendamentos: [],
 };
@@ -36,11 +36,12 @@ export function AgendamentoContextProvider({
 
   const agendamentoRepository = new AgendamentoRepository();
 
-  async function getAll() {
+  async function getAll(date: Date) {
     const lista: Array<AgendamentoResponseDto> =
-      await agendamentoRepository.getAll();
-    console.log(lista);
+      await agendamentoRepository.getAll(date);
+
     setAgendamentos(lista);
+    return lista;
   }
 
   async function cria(agendamento: AgendamentoRequestDto) {
@@ -51,16 +52,6 @@ export function AgendamentoContextProvider({
         agendamento,
         () => {
           window.alert("sucesso");
-          setAgendamentos((oldStateList) => {
-            var copy: AgendamentoRequestDto[] = [];
-            copy.push(agendamento);
-
-            for (let i = 0, j = 1; i < oldStateList.length; i++, j++) {
-              copy[j] = oldStateList[i];
-            }
-
-            return copy;
-          });
         },
         () => {
           window.alert("falha");

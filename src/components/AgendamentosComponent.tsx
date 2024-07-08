@@ -1,5 +1,6 @@
 import tbstyle from "../modules/Tabela.module.css";
 import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
+import { AppUtils } from "../utils/AppUtils";
 
 interface AgendamentosProps {
   agendamentosList: AgendamentoResponseDto[];
@@ -29,7 +30,7 @@ export function AgendamentosComponent({ agendamentosList }: AgendamentosProps) {
             <td>{item.nome_paciente}</td>
             <td>{item.destino?.nome}</td>
             <td>{item.horario}</td>
-            <td>{item.contato}</td>
+            <td>{AppUtils.FormatPhone(item.contato)}</td>
           </tr>
         ))}
       </tbody>

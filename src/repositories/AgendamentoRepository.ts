@@ -14,10 +14,10 @@ import { AgendamentoRequestDto } from "./../types/AgendamentoRequestDto";
 import { AppUtils } from "../utils/AppUtils";
 
 export class AgendamentoRepository {
-  async getAll(): Promise<AgendamentoResponseDto[]> {
+  async getAll(date: Date): Promise<AgendamentoResponseDto[]> {
     const q = query(
       collection(db, Collections.AGENDAMENTOS),
-      where("data", "==", AppUtils.DateToDayMonthYear(new Date()))
+      where("data", "==", AppUtils.DateToDayMonthYear(date))
     );
 
     try {
@@ -66,6 +66,7 @@ export class AgendamentoRepository {
         agendamentoRequestDto
       );
       console.log("Document written with ID: ", docRef.id);
+
       onSuccess();
     } catch (e) {
       console.error("Error adding document: ", e);

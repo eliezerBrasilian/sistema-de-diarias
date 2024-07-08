@@ -1,37 +1,24 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import carro from "../assets/car.png";
 import prefeitura_logo from "../assets/logo_brasao_prefeitura_bras_pires.jpg";
 import tbstyle from "../modules/Tabela.module.css";
-import { AgendamentoResponseDto } from "../types/AgendamentoResponseDto";
 import { DiariaDto } from "../types/DiariaDto";
-import { CustomBtn } from "./CustomBtn";
 
-import down from "../assets/down-arrows.png";
-import up from "../assets/up.png";
+import { DiariaComponentEditableItem } from "./DiariaComponentEditableItem";
+import { Rotas } from "../enums/Rotas";
 
 interface DiariaComponentEditableProps {
-  agendamentosList: AgendamentoResponseDto[];
-  diaria?: DiariaDto;
-  saveAndPrintDiaria?: () => Promise<void>;
-  closeDiaria?: () => void;
+  diaria: DiariaDto;
 }
+
 export function DiariaComponentEditable({
-  agendamentosList,
   diaria,
-  saveAndPrintDiaria = undefined,
-  closeDiaria = undefined,
 }: DiariaComponentEditableProps) {
-  if (agendamentosList.length == 0 || diaria == undefined) {
-    return <p>Nenhum paciente agendado</p>;
-  }
+  const navigate = useNavigate();
 
-  const [idCollected, setIdCollected] = useState("");
-  const [observacaoInputIsVisible, setObservacaoVisibility] = useState(false);
-
-  const toogleObservacaoVisibility = () => {
-    setObservacaoVisibility(!observacaoInputIsVisible);
+  const navigateToVisualizarDiaria = () => {
+    navigate(`${Rotas.TELA_VISUALIZAR_DIARIA}/${diaria.id}`);
   };
-
   return (
     <div>
       <div className={tbstyle.printableTable}>
@@ -92,53 +79,12 @@ export function DiariaComponentEditable({
             </tr>
           </thead>
           <tbody>
-            {agendamentosList.map((item) => (
-              <tr key={item.id}>
-                <td
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    rowGap: 15,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      columnGap: 15,
-                    }}
-                  >
-                    <p>{item.nome_paciente}</p>
-                    <CustomBtn text="Confirmar Ida" backgroundColor="#37718E" />
-                    <CustomBtn text="Cancelar Ida" backgroundColor="#C83E4D" />
-                  </div>
-                  <CustomBtn
-                    backgroundColor="#F4B860"
-                    text="Adicionar observacao"
-                    icon={
-                      observacaoInputIsVisible && idCollected == item.id
-                        ? up
-                        : down
-                    }
-                    onClick={() => {
-                      toogleObservacaoVisibility();
-                      setIdCollected(item.id);
-                    }}
-                  />
-                  {idCollected == item.id && observacaoInputIsVisible && (
-                    <textarea
-                      style={{
-                        width: "70%",
-                        minHeight: 60,
-                      }}
-                    />
-                  )}
-                </td>
-                <td>{item?.destino?.nome}</td>
-                <td>{item.horario}</td>
-                <td>{item.contato}</td>
-              </tr>
+            {diaria.pacientes.map((item) => (
+              <DiariaComponentEditableItem
+                key={item.id}
+                item={item}
+                diariaId={diaria.id}
+              />
             ))}
           </tbody>
           <tfoot>
@@ -178,9 +124,11 @@ export function DiariaComponentEditable({
             marginRight: 20,
           }}
           className={tbstyle.printButton}
-          onClick={closeDiaria}
+          onClick={() => {
+            alert("funcao nao disponivel no momento");
+          }}
         >
-          Fechar diaria
+          Excluir diaria
         </button>
         <button
           style={{
@@ -191,9 +139,9 @@ export function DiariaComponentEditable({
             background: "#406E8E",
           }}
           className={tbstyle.printButton}
-          onClick={saveAndPrintDiaria}
+          onClick={navigateToVisualizarDiaria}
         >
-          Imprimir diária
+          Visualizar diária
         </button>
       </div>
     </div>

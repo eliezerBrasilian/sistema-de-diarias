@@ -21,7 +21,11 @@ export function TelaAdicionarNaDiaria() {
 
   const [diaria, setDiaria] = useState<DiariaDto>();
 
-  const { agendamentos } = useAgendamentoContext();
+  const { getAll: getAllAgendamentos } = useAgendamentoContext();
+
+  const [agendamentos, setAgendamentos] = useState<AgendamentoResponseDto[]>(
+    []
+  );
   const { diarias, getAll, cria } = useDiariaContext();
 
   const [pacientesNaDiariaState, setPacientesNaDiariaStateList] = useState<
@@ -29,8 +33,18 @@ export function TelaAdicionarNaDiaria() {
   >([]);
 
   useEffect(() => {
-    getAll();
-  }, []);
+    async function getData() {
+      if (data != null) {
+        getAll(data);
+
+        const lista = await getAllAgendamentos(data);
+        console.log("---------lista");
+        console.log(lista);
+        setAgendamentos(lista);
+      }
+    }
+    getData();
+  }, [data]);
 
   const pacienteAgendadoEstaNaDiaria = (
     pacienteAgendado: AgendamentoResponseDto
@@ -106,7 +120,7 @@ export function TelaAdicionarNaDiaria() {
   const saveAndPrintDiaria = async () => {
     if (diaria != undefined) {
       await cria(diaria);
-      window.print();
+      // window.print();
     }
   };
 
